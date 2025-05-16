@@ -17,6 +17,11 @@ import { DefaultReactSuggestionItem } from '@blocknote/react';
 import { BlockNoteView } from '@blocknote/shadcn';
 import { useCallback, useEffect, useState } from 'react';
 
+import {
+  markdownContent,
+  parseMarkdownToBlocks,
+} from './parseMarkdownToBlocks';
+
 type SuggestionItem = DefaultReactSuggestionItem & {
   key: (typeof SELECTED_SLASH_MENU_ITEMS)[number];
 };
@@ -46,7 +51,7 @@ const getCustomSlashMenuItems = (
 export function App() {
   const locale = ko;
 
-  const [markdown, setMarkdown] = useState<string>('');
+  const [_markdown, setMarkdown] = useState<string>('');
 
   // Creates a new editor instance.
   const editor = useCreateBlockNote({
@@ -57,6 +62,7 @@ export function App() {
         emptyDocument: '내용을 입력하거나 /로 명령을 입력해주세요',
       },
     },
+    initialContent: parseMarkdownToBlocks(markdownContent),
   });
 
   const onChange = useCallback(async () => {
